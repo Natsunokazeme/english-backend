@@ -1,11 +1,13 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { WordEntity } from './word.entity';
 
 @Injectable()
 export class WordService {
   constructor(
-    @Inject('WordRepositoryToken')
+    // @Inject('WordRepositoryToken')
+    @InjectRepository(WordEntity)
     private wordRepository: Repository<WordEntity>,
   ) {}
 
@@ -13,7 +15,27 @@ export class WordService {
     return await this.wordRepository.find();
   }
 
-  // async findOne(id: number): Promise<WordEntity> {
-  //   return await this.wordRepository.findOne();
-  // }
+  getHello(): string {
+    return 'Hello World!';
+  }
+
+  async findOne(text: string): Promise<WordEntity> {
+    return await this.wordRepository.findOneBy({ text });
+  }
+
+  async create(word: WordEntity): Promise<WordEntity> {
+    await this.wordRepository.save(word);
+    return this.findOne(word.text);
+  }
+
+  async update(id: number, word: WordEntity): Promise<WordEntity> {
+    await this.wordRepository.update(id, word);
+    return await this.wordRepository.findOneBy({ text: word.text });
+  }
+
+  async delete(id: number): Promise<WordEntity | null> {
+    await this.wordRepository.delete(id);
+    const res = await this.wordRepository.findOneBy({ id });
+    return res;
+  }
 }

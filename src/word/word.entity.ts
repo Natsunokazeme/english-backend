@@ -17,8 +17,8 @@ export class WordEntity {
   @Column('varchar', { length: 500 })
   example: string;
 
-  @Column('varchar')
-  pronunciation: string;
+  // @Column('varchar')
+  // pronunciation: string;
 
   @Column('varchar')
   audioSrc: string;
@@ -26,9 +26,9 @@ export class WordEntity {
   @Column('varchar', { length: 500 })
   extra: string;
 
-  @Column('timestamp')
-  createTime: Date;
+  // @Column('timestamp')
+  // createTime: Date;
 
-  @Column('timestamp')
-  updateTime: Date;
+  // @Column('timestamp')
+  // updateTime: Date;
 }
