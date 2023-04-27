@@ -2,23 +2,24 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import { AxiosError } from 'axios';
 import { catchError, firstValueFrom } from 'rxjs';
+import * as Enums from './enums';
 
 @Injectable()
 export class AppService {
   private readonly logger = new Logger(AppService.name);
-  constructor(private httpService: HttpService) { }
+  constructor(private httpService: HttpService) {}
   getHello() {
-    return { message: 'Hello World!' };
+    return { message: Enums.Test.Message };
   }
 
   async search(query: string): Promise<any> {
     const { data } = await firstValueFrom(
       this.httpService
-        .get(`http://dict.youdao.com/suggest?q=${query}&doctype=json`)
+        .get(`${Enums.ExternalUrls.YoudaoDict}?q=${query}&doctype=json`)
         .pipe(
           catchError((error: AxiosError) => {
             this.logger.error(error.response.data);
-            throw 'An error happened!';
+            throw Enums.ErrorMessages.Failure;
           }),
         ),
     );
@@ -35,14 +36,36 @@ export class AppService {
   ): Promise<{ code: string; imgurl: string }> {
     console.log(username, password);
     const { data } = await firstValueFrom(
-      this.httpService
-        .get('https://api.uomg.com/api/rand.avatar?sort=动漫男&format=json')
-        .pipe(
-          catchError((error: AxiosError) => {
-            this.logger.error(error.response.data);
-            throw 'An error happened!';
-          }),
-        ),
+      this.httpService.get(`${Enums.ExternalUrls.AnimeAvatar}`).pipe(
+        catchError((error: AxiosError) => {
+          this.logger.error(error.response.data);
+          throw Enums.ErrorMessages.Failure;
+        }),
+      ),
+    );
+    return data;
+  }
+
+  async getCatImg(): Promise<any> {
+    const { data } = await firstValueFrom(
+      this.httpService.get(`${Enums.ExternalUrls.GetCatImage}`).pipe(
+        catchError((error: AxiosError) => {
+          this.logger.error(error.response.data);
+          throw Enums.ErrorMessages.Failure;
+        }),
+      ),
+    );
+    return data;
+  }
+
+  async getIPAdress(): Promise<any> {
+    const { data } = await firstValueFrom(
+      this.httpService.get(`${Enums.ExternalUrls.IPAdress}`).pipe(
+        catchError((error: AxiosError) => {
+          this.logger.error(error.response.data);
+          throw Enums.ErrorMessages.Failure;
+        }),
+      ),
     );
     return data;
   }

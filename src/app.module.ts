@@ -1,9 +1,9 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { WordEntity } from './word/word.entity';
 import { WordModule } from './word/word.module';
 
 @Module({
@@ -17,7 +17,7 @@ import { WordModule } from './word/word.module';
       username: 'root',
       password: 'admin',
       database: 'words_learning',
-      entities: [WordEntity],
+      entities: [join(__dirname, '**', '*.entity.{ts,js}')],
       synchronize: true,
     }),
   ],

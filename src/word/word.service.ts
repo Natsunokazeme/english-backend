@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import * as Enums from '../enums';
 import { WordEntity } from './word.entity';
 
 @Injectable()
@@ -16,7 +17,7 @@ export class WordService {
   }
 
   getHello(): string {
-    return 'Hello World!';
+    return Enums.Test.Message;
   }
 
   async findOne(text: string): Promise<WordEntity> {
@@ -24,8 +25,25 @@ export class WordService {
   }
 
   async create(word: WordEntity): Promise<WordEntity> {
-    await this.wordRepository.save(word);
-    return this.findOne(word.text);
+    const existing = await this.wordRepository.findOneBy({ text: word.text });
+    if (existing) {
+      return this.update(existing.id, word);
+    } else {
+      await this.wordRepository.save(word);
+      return this.findOne(word.text);
+    }
+  }
+
+  async importWords(words: WordEntity[]): Promise<WordEntity[]> {
+    const res = [];
+    for (const word of words) {
+      try {
+        res.push(await this.create(word));
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    return res;
   }
 
   async update(id: number, word: WordEntity): Promise<WordEntity> {

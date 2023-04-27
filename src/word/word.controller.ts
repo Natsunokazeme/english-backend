@@ -25,4 +25,9 @@ export class WordController {
   create(@Body() body: WordEntity) {
     return this.wordService.create(body);
   }
+
+  @Post('import')
+  import(@Body() body: { words: WordEntity[] }) {
+    return this.wordService.importWords(body.words);
+  }
 }

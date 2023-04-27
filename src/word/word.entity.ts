@@ -1,4 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class WordEntity {
@@ -17,8 +23,11 @@ export class WordEntity {
   @Column('varchar', { length: 500 })
   example: string;
 
-  // @Column('varchar')
-  // pronunciation: string;
+  @Column('varchar')
+  pronunciation: string;
+
+  @Column('varchar')
+  imageUrl: string;
 
   @Column('varchar')
   audioSrc: string;
@@ -26,9 +35,13 @@ export class WordEntity {
   @Column('varchar', { length: 500 })
   extra: string;
 
-  // @Column('timestamp')
-  // createTime: Date;
+  @CreateDateColumn({
+    type: 'timestamp',
+  })
+  createTime: Date;
 
-  // @Column('timestamp')
-  // updateTime: Date;
+  @UpdateDateColumn({
+    type: 'timestamp',
+  })
+  updateTime: Date;
 }

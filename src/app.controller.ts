@@ -26,4 +26,14 @@ export class AppController {
   ): Promise<{ code: string; imgurl: string }> {
     return this.appService.login(body.username, body.password);
   }
+
+  @Get('/getCatImg')
+  getCatImg(): Promise<{ code: string; imgurl: string }> {
+    return this.appService.getCatImg();
+  }
+
+  @Get('/IPAdress')
+  getIPAdress(): Promise<{ code: string; ip: string }> {
+    return this.appService.getIPAdress();
+  }
 }
