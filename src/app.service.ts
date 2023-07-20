@@ -2,10 +2,13 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import { AxiosError } from 'axios';
 import { catchError, firstValueFrom } from 'rxjs';
+import { MidJourneyRequest, MidJourneyResponse } from './app.interface';
 import * as Enums from './enums';
 
 @Injectable()
 export class AppService {
+  private mdjToken = '';
+  private readonly APIKEY = '22992aa8a23a90ec58c3dc8735f7378b';
   private readonly logger = new Logger(AppService.name);
   constructor(private httpService: HttpService) {}
   getHello() {
@@ -66,6 +69,41 @@ export class AppService {
           throw Enums.ErrorMessages.Failure;
         }),
       ),
+    );
+    return data;
+  }
+
+  async getMidjourney(config: MidJourneyRequest): Promise<MidJourneyResponse> {
+    if (!this.mdjToken) {
+      //get token
+      const { data } = await firstValueFrom(
+        this.httpService
+          .get(
+            `${Enums.ExternalUrls.Midjourney}/auth/getToken?apikey=${this.APIKEY}`,
+          )
+          .pipe(
+            catchError((error: AxiosError) => {
+              this.logger.error(error.response.data);
+              throw Enums.ErrorMessages.Failure;
+            }),
+          ),
+      );
+      console.log(data);
+      this.mdjToken = data.data.token;
+    }
+    const { data } = await firstValueFrom(
+      this.httpService
+        .post(`${Enums.ExternalUrls.Midjourney}/v1/text2img`, config, {
+          headers: {
+            token: this.mdjToken,
+          },
+        })
+        .pipe(
+          catchError((error: AxiosError) => {
+            this.logger.error(error.response.data);
+            throw Enums.ErrorMessages.Failure;
+          }),
+        ),
     );
     return data;
   }

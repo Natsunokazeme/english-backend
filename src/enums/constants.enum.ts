@@ -3,4 +3,5 @@ export enum ExternalUrls {
   YoudaoDict = 'http://dict.youdao.com/suggest',
   IPAdress = 'http://realip.cc',
   GetCatImage = 'https://api.thecatapi.com/v1/images/search?limit=1',
+  Midjourney = 'https://flagopen.baai.ac.cn/flagStudio',
 }

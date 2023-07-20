@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { MidJourneyResponse } from './app.interface';
 import { AppService } from './app.service';
 
 @Controller()
@@ -35,5 +36,16 @@ export class AppController {
   @Get('/IPAdress')
   getIPAdress(): Promise<{ code: string; ip: string }> {
     return this.appService.getIPAdress();
+  }
+
+  @Get('/createImage')
+  getMidjourney(
+    @Query() query: { prompt: string },
+  ): Promise<MidJourneyResponse> {
+    return this.appService.getMidjourney({
+      prompt: query.prompt,
+      width: 720,
+      height: 720,
+    });
   }
 }
