@@ -38,14 +38,33 @@ export class AppController {
     return this.appService.getIPAdress();
   }
 
-  @Get('/createImage')
+  @Post('/createImage')
   getMidjourney(
-    @Query() query: { prompt: string },
+    @Body()
+    body: {
+      prompt: string;
+      width?: number;
+      height?: number;
+      guidance_scale?: number;
+      negative_prompts?: string;
+      steps?: number;
+      style?: string;
+    },
   ): Promise<MidJourneyResponse> {
     return this.appService.getMidjourney({
-      prompt: query.prompt,
-      width: 720,
-      height: 720,
+      ...body,
+      width: body.width ?? 720,
+      height: body.height ?? 720,
     });
   }
+
+  // @Post('/createImageByImage')
+  // createImageByImage(
+  //   @Body()
+  //   body: {
+  //     file: File;
+  //   },
+  // ): Promise<MidJourneyResponse> {
+  //   return this.appService.createImageByImage(body.file);
+  // }
 }

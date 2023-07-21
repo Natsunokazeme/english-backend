@@ -76,20 +76,7 @@ export class AppService {
   async getMidjourney(config: MidJourneyRequest): Promise<MidJourneyResponse> {
     if (!this.mdjToken) {
       //get token
-      const { data } = await firstValueFrom(
-        this.httpService
-          .get(
-            `${Enums.ExternalUrls.Midjourney}/auth/getToken?apikey=${this.APIKEY}`,
-          )
-          .pipe(
-            catchError((error: AxiosError) => {
-              this.logger.error(error.response.data);
-              throw Enums.ErrorMessages.Failure;
-            }),
-          ),
-      );
-      console.log(data);
-      this.mdjToken = data.data.token;
+      await this.loginMidjourney();
     }
     const { data } = await firstValueFrom(
       this.httpService
@@ -107,4 +94,31 @@ export class AppService {
     );
     return data;
   }
+
+  async loginMidjourney(): Promise<void> {
+    const { data } = await firstValueFrom(
+      this.httpService
+        .get(
+          `${Enums.ExternalUrls.Midjourney}/auth/getToken?apikey=${this.APIKEY}`,
+        )
+        .pipe(
+          catchError((error: AxiosError) => {
+            this.logger.error(error.response.data);
+            throw Enums.ErrorMessages.Failure;
+          }),
+        ),
+    );
+    console.log(data);
+    this.mdjToken = data.data.token;
+  }
+
+  // async createImageByImage(file: any): Promise<MidJourneyResponse> {
+  //   if (!this.mdjToken) {
+  //     //get token
+  //     await this.loginMidjourney();
+  //   }
+
+  //   const { data } = await firstValueFrom(
+  //     this.httpService
+  //       .post(`${Enums.ExternalUrls.Midjourney}/v1/img2img`, file, {
 }
