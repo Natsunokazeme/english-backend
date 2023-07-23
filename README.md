@@ -31,3 +31,6 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+nest g resource <resource_name> --no-spec
+快速创建资源包
