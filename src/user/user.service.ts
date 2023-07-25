@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as CryptoJS from 'crypto-js';
+import * as nodemailer from 'nodemailer';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -13,21 +14,50 @@ export class UserService {
     private userRepository: Repository<UserEntity>,
   ) {}
 
+  async sendEmail(email: string) {
+    const transporter = nodemailer.createTransport({
+      service: 'QQ',
+      auth: {
+        user: '2496347060@qq.com',
+        pass: 'ubrpwovhpsluebii',
+      },
+    });
+
+    const mailOptions = {
+      from: '2496347060@qq.com',
+      to: email,
+      subject: 'personal project email test',
+      text: 'Hello world?',
+      html: '<b>You have registered in the following web site</b><a href="http://localhost:3000">http://localhost:3000</a>',
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return console.log(error);
+      }
+      console.log(info);
+    });
+  }
+
   async create(createUserDto: CreateUserDto) {
     createUserDto.password = CryptoJS.MD5(createUserDto.password).toString();
-    if (
-      await this.userRepository.findOneBy({ userName: createUserDto.userName })
-    ) {
+    const existedUser = await this.userRepository.findOneBy({
+      userName: createUserDto.userName,
+    });
+    if (existedUser) {
       return {
         code: 400,
-        message: '用户名已存在',
+        message: '用户已存在',
       };
     }
-    const result = await this.userRepository.save(createUserDto);
+    if (createUserDto.email) {
+      this.sendEmail(createUserDto.email);
+    }
+    const createdUser = await this.userRepository.save(createUserDto);
     return {
       code: 201,
       message: 'success',
-      token: result.password,
+      token: createdUser.password,
     };
   }
 
