@@ -68,15 +68,15 @@ export class AppController {
   //   return this.appService.createImageByImage(body.file);
   // }
 
-  @Post('/createAccount')
-  createAccount(
-    @Body()
-    body: {
-      username: string;
-      password: string;
-      email?: string;
-    },
-  ): Promise<{ code: string; message: string }> {
-    return this.appService.createAccount(body);
-  }
+  // @Post('/createAccount')
+  // createAccount(
+  //   @Body()
+  //   body: {
+  //     username: string;
+  //     password: string;
+  //     email?: string;
+  //   },
+  // ): Promise<{ code: string; message: string }> {
+  //   return this.appService.createAccount(body);
+  // }
 }

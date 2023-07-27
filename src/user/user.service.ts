@@ -56,8 +56,31 @@ export class UserService {
     const createdUser = await this.userRepository.save(createUserDto);
     return {
       code: 201,
-      message: 'success',
+      message: 'account created successfully',
       token: createdUser.password,
+    };
+  }
+
+  async login(createUserDto: CreateUserDto) {
+    const existedUser = await this.userRepository.findOneBy({
+      userName: createUserDto.userName,
+    });
+    if (!existedUser) {
+      return {
+        code: 400,
+        message: '用户不存在',
+      };
+    }
+    if (existedUser.password !== createUserDto.password) {
+      return {
+        code: 400,
+        message: '密码错误',
+      };
+    }
+    return {
+      code: 200,
+      message: 'login successfully',
+      token: existedUser.password,
     };
   }
 

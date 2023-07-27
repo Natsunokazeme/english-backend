@@ -1,7 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import { AxiosError } from 'axios';
-import CryptoJS from 'crypto-js';
 import { catchError, firstValueFrom } from 'rxjs';
 import { MidJourneyRequest, MidJourneyResponse } from './app.interface';
 import * as Enums from './enums';
@@ -123,17 +122,17 @@ export class AppService {
   //     this.httpService
   //       .post(`${Enums.ExternalUrls.Midjourney}/v1/img2img`, file, {
 
-  async createAccount(user: {
-    username: string;
-    password: string;
-    email?: string;
-  }): Promise<any> {
-    if (user.email?.length > 0) {
-      //send email
-    }
-    //create account in db with MD5 password
-    const hashPassword = CryptoJS.MD5(user.password).toString();
+  // async createAccount(user: {
+  //   username: string;
+  //   password: string;
+  //   email?: string;
+  // }): Promise<any> {
+  //   if (user.email?.length > 0) {
+  //     //send email
+  //   }
+  //   //create account in db with MD5 password
+  //   const hashPassword = CryptoJS.MD5(user.password).toString();
 
-    return { code: '200', message: 'success' };
-  }
+  //   return { code: '200', message: 'success' };
+  // }
 }

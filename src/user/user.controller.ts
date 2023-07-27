@@ -6,7 +6,9 @@ import {
   Param,
   Patch,
   Post,
+  Res,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
@@ -15,9 +17,26 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  @Post('create')
+  async create(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
+    const re = await this.userService.create(createUserDto);
+    res.cookie('token', re.token, {
+      expires: new Date(Date.now() + 1000 * 60 * 10),
+      httpOnly: true,
+    });
+    return res.send(re);
+  }
+
+  @Post('login')
+  async login(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
+    const re = await this.userService.login(createUserDto);
+    if (re.code === 200) {
+      res.cookie('token', re.token, {
+        expires: new Date(Date.now() + 1000 * 60 * 10),
+        httpOnly: true,
+      });
+    }
+    return res.send(re);
   }
 
   @Get()
