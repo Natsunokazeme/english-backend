@@ -33,22 +33,6 @@ export class AppService {
     return `Searching for ${id} and ${name}`;
   }
 
-  async login(
-    username: string,
-    password: string,
-  ): Promise<{ code: string; imgurl: string }> {
-    console.log(username, password);
-    const { data } = await firstValueFrom(
-      this.httpService.get(`${Enums.ExternalUrls.AnimeAvatar}`).pipe(
-        catchError((error: AxiosError) => {
-          this.logger.error(error.response.data);
-          throw Enums.ErrorMessages.Failure;
-        }),
-      ),
-    );
-    return data;
-  }
-
   async getCatImg(): Promise<any> {
     const { data } = await firstValueFrom(
       this.httpService.get(`${Enums.ExternalUrls.GetCatImage}`).pipe(

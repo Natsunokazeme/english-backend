@@ -21,13 +21,6 @@ export class AppController {
     return this.appService.search2(params.id, params.name);
   }
 
-  @Post('/login')
-  login(
-    @Body() body: { username: string; password: string },
-  ): Promise<{ code: string; imgurl: string }> {
-    return this.appService.login(body.username, body.password);
-  }
-
   @Get('/getCatImg')
   getCatImg(): Promise<{ code: string; imgurl: string }> {
     return this.appService.getCatImg();
@@ -66,17 +59,5 @@ export class AppController {
   //   },
   // ): Promise<MidJourneyResponse> {
   //   return this.appService.createImageByImage(body.file);
-  // }
-
-  // @Post('/createAccount')
-  // createAccount(
-  //   @Body()
-  //   body: {
-  //     username: string;
-  //     password: string;
-  //     email?: string;
-  //   },
-  // ): Promise<{ code: string; message: string }> {
-  //   return this.appService.createAccount(body);
   // }
 }
