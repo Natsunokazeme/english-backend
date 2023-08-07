@@ -4,8 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { WordModule } from './word/word.module';
 import { UserModule } from './user/user.module';
+import { WordModule } from './word/word.module';
 
 @Module({
   imports: [
@@ -13,7 +13,7 @@ import { UserModule } from './user/user.module';
     WordModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
+      host: 'mysql-container',
       port: 3306,
       username: 'root',
       password: 'admin',
