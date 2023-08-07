@@ -28,7 +28,7 @@ export class UserService {
       to: email,
       subject: 'personal project email test',
       text: 'Hello world?',
-      html: '<b>You have registered in the following web site</b><a href="http://localhost:3000">http://localhost:3000</a>',
+      html: '<b>You have registered in the following web site</b><a href="https://www.laozhongren.com">https://www.laozhongren.com</a>',
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -81,6 +81,34 @@ export class UserService {
       code: 200,
       message: 'login successfully',
       token: existedUser.password,
+      username: existedUser.userName,
+      avatar: existedUser.avatar,
+    };
+  }
+
+  async setting(updateUserDto: UpdateUserDto) {
+    const existedUser = await this.userRepository.findOneBy({
+      userName: updateUserDto.userName,
+    });
+    existedUser.avatar = updateUserDto.avatar;
+    if (!existedUser) {
+      return {
+        code: 400,
+        message: '用户不存在',
+      };
+    }
+    if (existedUser.password !== updateUserDto.password) {
+      return {
+        code: 400,
+        message: '密码错误',
+      };
+    }
+    return {
+      code: 200,
+      message: 'setting successfully',
+      token: existedUser.password,
+      username: existedUser.userName,
+      avatar: existedUser.avatar,
     };
   }
 

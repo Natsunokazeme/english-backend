@@ -23,6 +23,7 @@ export class UserEntity {
   @Column('varchar', { nullable: true })
   email: string;
 
+  //maxSize: 64kb
   @Column('text', { nullable: true })
   avatar: string;
 
