@@ -13,7 +13,7 @@ import { WordModule } from './word/word.module';
     WordModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: '172.17.0.2172.22.0.2',
+      host: 'host.docker.internal',
       port: 3306,
       username: 'root',
       password: 'admin',
