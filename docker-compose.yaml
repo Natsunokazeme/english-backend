@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  # node:
+  #   image: 'node:14-alpine'
+  #   container_name: natsume-service
+  #   working_dir: /home/node/app
+  #   restart: always
+  #   volumes:
+  #     - ./:/home/node/app
+  #   links:
+  #     - 'db:mysql'
+  #   ports:
+  #     - '8080:8080'
+  #   expose:
+  #     - '8080'
+  #   command: 'npm start'
+  #   depends_on:
+  #     - db
+  db:
+    image: mysql:latest
+    container_name: mysql-container
+    restart: always
+    environment:
+      - MYSQL_DATABASE=words_learning
+      - MYSQL_ROOT_PASSWORD=admin
+    ports:
+      - '3306:3306'
