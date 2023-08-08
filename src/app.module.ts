@@ -13,7 +13,7 @@ import { WordModule } from './word/word.module';
     WordModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
+      host: '172.17.0.2172.22.0.2',
       port: 3306,
       username: 'root',
       password: 'admin',
