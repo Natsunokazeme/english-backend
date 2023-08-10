@@ -13,10 +13,10 @@ import { WordModule } from './word/word.module';
     WordModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'db',
+      host: '127.0.0.1',
       port: 3306,
       username: 'root',
-      password: 'admin',
+      password: 'Dnf43586156.',
       database: 'words_learning',
       entities: [join(__dirname, '**', '*.entity.{ts,js}')],
       synchronize: true,
